@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SEA - Detalle Histórico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="background-color: #f4f7f6;">
+    <div class="container-sea">
+        <div class="header-banner">
+            <h1>SEA: Revisión de Evaluación</h1>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <a href="/historial" style="text-decoration: none; color: #3498db; font-weight: bold;">← Volver al Historial</a>
+        </div>
+
+        <div class="card" style="border-left: 5px solid #3498db;">
+            <h3>Proyecto: {{ p.titulo }}</h3>
+            <p><strong>Fecha:</strong> {{ p.fecha }}</p>
+            <p><strong>Jurado:</strong> {{ session['usuario'] }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Puntuación por Secciones (Base 20)</h3>
+            <p style="font-size: 0.85em; color: #7f8c8d; margin-bottom: 15px;">Las notas individuales de los criterios se han consolidado para mostrar el total de cada sección.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="item">
+                    <span>1. Trabajo:</span> 
+                    <strong>{{ (d['t1'][0]|int + d['t2'][0]|int + d['t3'][0]|int + d['t4'][0]|int + d['t5'][0]|int) }} / 20</strong>
+                </div>
+                <div class="item">
+                    <span>2. Diapositivas:</span> 
+                    <strong>{{ (d['d1'][0]|int + d['d2'][0]|int + d['d3'][0]|int + d['d4'][0]|int + d['d5'][0]|int) }} / 20</strong>
+                </div>
+                <div class="item">
+                    <span>3. Equipo:</span> 
+                    <strong>{{ (d['e1'][0]|int + d['e2'][0]|int + d['e3'][0]|int + d['e4'][0]|int + d['e5'][0]|int) }} / 20</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Evaluación Individual de Expositores</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #f8f9fa;">
+                        <th style="padding: 10px; text-align: left; border-bottom: 2px solid #3498db;">Estudiante</th>
+                        <th style="padding: 10px; text-align: right; border-bottom: 2px solid #3498db;">Nota Individual (/20)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nombre in d['nombre_exp[]'] %}
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;">{{ nombre }}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: right;">
+                            <strong>
+                            {{ (d['nota1[]'][loop.index0]|int + d['nota2[]'][loop.index0]|int + d['nota3[]'][loop.index0]|int + d['nota4[]'][loop.index0]|int + d['nota5[]'][loop.index0]|int) }} / 20
+                            </strong>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding-bottom: 40px;">
+            <button onclick="window.print()" class="btn-submit" style="background: #7f8c8d; width: auto; padding: 10px 30px;">
+                Imprimir este Registro
+            </button>
+        </div>
+    </div>
+</body>
+</html>

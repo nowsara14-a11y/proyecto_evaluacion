@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Historial - SEA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="background-color: #f4f7f6;">
+    <div class="container-sea">
+        <div class="header-banner">
+            <h1>SEA: Mi Historial</h1>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none; color: #3498db;">← Volver al Panel de Evaluación</a>
+        </div>
+
+        <div class="card">
+            <h3>Evaluaciones Realizadas</h3>
+            <p style="color: #666; font-size: 0.9em; margin-bottom: 20px;">Haz clic en "Ver Criterios" para revisar el detalle de cada nota.</p>
+            
+            {% if proyectos %}
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #f8f9fa; text-align: left;">
+                        <th style="padding: 12px; border-bottom: 2px solid #3498db;">Fecha</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #3498db;">Título del Proyecto</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #3498db; text-align: center;">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in proyectos %}
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;">{{ p.fecha }}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;"><strong>{{ p.titulo }}</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: center;">
+                            <a href="/ver_proyecto/{{ p.id }}" 
+                               style="background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.85em;">
+                               Ver Criterios
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div style="text-align: center; padding: 40px; color: #95a5a6;">
+                <p>Aún no tienes evaluaciones guardadas.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
