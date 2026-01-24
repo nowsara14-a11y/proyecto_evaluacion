@@ -1,113 +1,52 @@
-body {
-    background-color: #f4f7f9;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+/* DISEÑO PROFESIONAL SEA */
+body { 
+    font-size: 18px; /* Texto base más grande */
+    background-color: #ffffff;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
 }
 
-.container-sea {
-    max-width: 900px;
-    margin: auto;
-    background: white;
+/* Encabezado con Logo impecable */
+.header-sea {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #1a3a5a;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    width: 80px; /* Tamaño ideal para móvil */
+    height: auto;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.title-stack {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #1a3a5a;
+    line-height: 1.1;
+}
+
+/* Inputs y Botones gigantes para personas mayores */
+input, select, textarea {
+    width: 100% !important;
+    height: 60px !important; /* Muy fácil de tocar */
+    font-size: 1.3rem !important;
+    margin-bottom: 20px;
+    border: 2px solid #1a3a5a;
     border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-sizing: border-box;
 }
 
-.header-banner {
-    background: white;
-    padding: 30px;
-    text-align: center;
-    border-bottom: 2px solid #3498db;
-}
-
-.header-banner h1 {
-    color: #2980b9;
-    margin: 0;
-    font-size: 2.2em;
-    border: 2px solid #3498db;
-    padding: 15px;
-    border-radius: 50px;
-    display: inline-block;
-}
-
-.escala-container {
-    background: #f8f9fa;
-    margin: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.escala-items {
-    display: flex;
-    justify-content: space-around;
-    color: #444;
-}
-
-.card {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #e1e8ed;
-    border-radius: 10px;
-}
-
-.card h3 {
-    color: #2c3e50;
-    margin-top: 0;
-    border-bottom: 1px solid #3498db;
-    padding-bottom: 10px;
-}
-
-.row {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-input[type="text"], input[type="date"] {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-input[type="number"] {
-    width: 60px;
-    text-align: center;
-}
-
-.expositor-individual {
-    background-color: rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-}
-
-.criterios-individuales .item {
-    font-size: 0.9em;
-    padding: 8px 0;
-}
-
-.btn-submit {
-    display: block;
-    width: calc(100% - 40px);
-    margin: 20px;
-    padding: 15px;
-    background: #3498db;
+button {
+    width: 100%;
+    height: 65px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 12px;
+    background-color: #1a3a5a;
     color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1em;
     cursor: pointer;
-    transition: background 0.3s;
-}
-
-.btn-submit:hover {
-    background: #2980b9;
 }

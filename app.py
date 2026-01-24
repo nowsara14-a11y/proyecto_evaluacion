@@ -89,22 +89,39 @@ def enviar():
 
     return render_template('resultados.html', titulo=titulo, jurado=jurado_nom, individuales=individuales)
 
-# --- RUTAS DE HISTORIAL ---
+# --- RUTAS DE HISTORIAL Y EDICIÓN ---
 @app.route('/historial')
 def historial():
     if 'user_id' not in session: return redirect(url_for('login'))
     proyectos = Proyecto.query.filter_by(jurado_id=session['user_id']).all()
     return render_template('historial.html', proyectos=proyectos)
 
-@app.route('/ver_proyecto/<int:id>')
-def ver_proyecto(id):
+@app.route('/editar_evaluacion/<int:id>', methods=['GET', 'POST'])
+def editar_evaluacion(id):
     if 'user_id' not in session: return redirect(url_for('login'))
     proyecto = Proyecto.query.get_or_404(id)
-    # Convertimos el JSON guardado de vuelta a un diccionario para mostrar los criterios
+    
+    if request.method == 'POST':
+        # Actualizamos los datos con lo nuevo que escribió el jurado
+        datos_completos = json.dumps(request.form.to_dict(flat=False))
+        proyecto.titulo = request.form.get('titulo')
+        proyecto.fecha = request.form.get('fecha')
+        proyecto.datos_json = datos_completos
+        db.session.commit()
+        return redirect(url_for('historial'))
+    
+    # Si es GET, cargamos el formulario con los datos guardados
     datos = json.loads(proyecto.datos_json)
-    return render_template('detalle_historial.html', p=proyecto, d=datos)
+    return render_template('evaluacion.html', editar=True, p=proyecto, d=datos)
+
+@app.route('/eliminar_evaluacion/<int:id>')
+def eliminar_evaluacion(id):
+    if 'user_id' not in session: return redirect(url_for('login'))
+    proyecto = Proyecto.query.get_or_404(id)
+    db.session.delete(proyecto)
+    db.session.commit()
+    return redirect(url_for('historial'))
 
 # --- INICIO DEL SERVIDOR ---
 if __name__ == '__main__':
-    # Quitamos debug y usamos el puerto 5000 explícitamente
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
