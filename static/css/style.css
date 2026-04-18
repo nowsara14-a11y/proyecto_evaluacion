@@ -1,52 +1,45 @@
-/* DISEÑO PROFESIONAL SEA */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body { 
-    font-size: 18px; /* Texto base más grande */
-    background-color: #ffffff;
-    margin: 0;
-    padding: 10px;
+    background-color: #004a99; 
+    font-family: Arial, sans-serif; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 20px;
 }
-
-/* Encabezado con Logo impecable */
-.header-sea {
-    display: flex;
-    align-items: center;
-    border-bottom: 2px solid #1a3a5a;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
+.login-container { 
+    background: white; 
+    width: 100%; 
+    max-width: 450px; 
+    padding: 40px; 
+    border-radius: 20px; 
+    text-align: center; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
 }
-
-.logo-img {
-    width: 80px; /* Tamaño ideal para móvil */
-    height: auto;
-    margin-right: 15px;
-    border-radius: 5px;
+.logo-institucion { 
+    width: 160px; 
+    margin-bottom: 20px; 
 }
-
-.title-stack {
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: #1a3a5a;
-    line-height: 1.1;
+h1 { color: #004a99; font-size: 1.6rem; margin-bottom: 25px; text-transform: uppercase; }
+input { 
+    width: 100%; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    font-size: 1.3rem; 
+    border: 2px solid #004a99; 
+    border-radius: 12px; 
 }
-
-/* Inputs y Botones gigantes para personas mayores */
-input, select, textarea {
-    width: 100% !important;
-    height: 60px !important; /* Muy fácil de tocar */
-    font-size: 1.3rem !important;
-    margin-bottom: 20px;
-    border: 2px solid #1a3a5a;
-    border-radius: 12px;
-    box-sizing: border-box;
-}
-
-button {
-    width: 100%;
-    height: 65px;
-    font-size: 1.4rem;
-    font-weight: bold;
-    border-radius: 12px;
-    background-color: #1a3a5a;
-    color: white;
+.btn-principal { 
+    width: 100%; 
+    padding: 20px; 
+    background-color: #ffcc00; 
+    color: #004a99; 
+    font-weight: bold; 
+    font-size: 1.5rem; 
+    border: none; 
+    border-radius: 12px; 
     cursor: pointer;
 }
+.enlaces { margin-top: 20px; font-size: 1.1rem; }
+.enlaces a { color: #004a99; font-weight: bold; text-decoration: none; }

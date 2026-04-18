@@ -2,53 +2,68 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Historial - SEA</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEA - Historial de Evaluaciones</title>
+    <style>
+        :root { --primary: #002d5e; --accent: #ffd700; --dark: #001a33; }
+        body { font-family: sans-serif; background: #f4f7f6; padding: 15px; margin: 0; }
+        .container-historial { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary); text-align: center; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
+        
+        .btn-volver { text-decoration: none; color: white; background: var(--primary); padding: 10px 15px; border-radius: 8px; display: inline-block; margin-bottom: 20px; font-weight: bold; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
+        th { background: var(--primary); color: white; padding: 12px; text-align: left; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #ddd; }
+        tr:hover { background-color: #f9f9f9; }
+
+        /* Estilos de botones de acción */
+        .btn-edit { background: #ffcc00; color: #002d5e; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; transition: 0.3s; }
+        .btn-edit:hover { background: #e6b800; transform: scale(1.05); }
+        
+        .btn-pdf { background: #e67e22; color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 5px; }
+        
+        .badge-nota { background: #2ecc71; color: white; font-weight: bold; padding: 5px 10px; border-radius: 20px; display: inline-block; }
+    </style>
 </head>
-<body style="background-color: #f4f7f6;">
-    <div class="container-sea">
-        <div class="header-banner">
-            <h1>SEA: Mi Historial</h1>
-        </div>
-
-        <div style="margin-bottom: 20px;">
-            <a href="/" style="text-decoration: none; color: #3498db;">← Volver al Panel de Evaluación</a>
-        </div>
-
-        <div class="card">
-            <h3>Evaluaciones Realizadas</h3>
-            <p style="color: #666; font-size: 0.9em; margin-bottom: 20px;">Haz clic en "Ver Criterios" para revisar el detalle de cada nota.</p>
-            
-            {% if proyectos %}
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr style="background: #f8f9fa; text-align: left;">
-                        <th style="padding: 12px; border-bottom: 2px solid #3498db;">Fecha</th>
-                        <th style="padding: 12px; border-bottom: 2px solid #3498db;">Título del Proyecto</th>
-                        <th style="padding: 12px; border-bottom: 2px solid #3498db; text-align: center;">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for p in proyectos %}
-                    <tr>
-                        <td style="padding: 12px; border-bottom: 1px solid #eee;">{{ p.fecha }}</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #eee;"><strong>{{ p.titulo }}</strong></td>
-                        <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: center;">
-                            <a href="/ver_proyecto/{{ p.id }}" 
-                               style="background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.85em;">
-                               Ver Criterios
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <div style="text-align: center; padding: 40px; color: #95a5a6;">
-                <p>Aún no tienes evaluaciones guardadas.</p>
-            </div>
-            {% endif %}
-        </div>
+<body>
+    <div class="container-historial">
+        <h1>Historial de Evaluaciones</h1>
+        
+        <a href="{{ url_for('index') }}" class="btn-volver">← VOLVER AL PANEL</a>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Proyecto</th>
+                    <th>Estudiante</th>
+                    <th>Jurado</th>
+                    <th>Nota</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in evaluaciones %}
+                <tr>
+                    <td>{{ e.fecha }}</td>
+                    <td><b>{{ e.proyecto }}</b></td>
+                    <td>{{ e.estudiante }}</td>
+                    <td>{{ e.jurado }}</td>
+                    <td><span class="badge-nota">{{ e.nota_final }}</span></td>
+                    <td>
+                        <a href="{{ url_for('editar_evaluacion', id=e.id) }}" class="btn-edit">
+                            EDITAR / REVISAR
+                        </a>
+                        
+                        <a href="/descargar_reporte/{{ e.proyecto }}" class="btn-pdf">
+                            PDF
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

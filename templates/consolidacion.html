@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEA - Consolidación</title>
+    <style>
+        :root { --blue: #002d5e; --gold: #ffcc00; --dark: #001a33; }
+        body { background: var(--dark); color: white; font-family: sans-serif; padding: 10px; padding-bottom: 120px; }
+        
+        .card-estudiante { border: 2px solid var(--gold); padding: 15px; margin-bottom: 30px; border-radius: 12px; background: rgba(255,255,255,0.05); }
+        .nombre-est { color: var(--gold); text-align: center; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
+
+        /* Estética igual a la de añadir expositor */
+        .box-jurado { background: var(--blue); border: 1px solid var(--gold); border-radius: 10px; margin-bottom: 15px; padding: 15px; overflow: hidden; }
+        
+        .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #444; }
+        .row span { font-size: 1.1rem; flex: 1; }
+
+        input[type="text"] { width: 92%; padding: 12px; margin-bottom: 10px; font-size: 1.1rem; border-radius: 8px; border: 1px solid var(--gold); background: white; color: black; }
+        .input-nota { font-size: 1.3rem; padding: 8px; background: var(--gold); border-radius: 8px; font-weight: bold; border: none; width: 70px; text-align: center; color: var(--blue); }
+        
+        .btn-add { width: 100%; padding: 15px; background: #27ae60; color: white; font-weight: bold; border: none; border-radius: 8px; margin: 10px 0; cursor: pointer; font-size: 1rem; }
+        .btn-eliminar { background: #e74c3c; color: white; border: none; padding: 10px; border-radius: 8px; margin-top: 10px; width: 100%; font-weight: bold; cursor: pointer; }
+        
+        .promedio-final { text-align: right; font-size: 1.4rem; color: var(--gold); font-weight: bold; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; }
+
+        .footer { position: fixed; bottom: 0; left:0; width:100%; background: var(--blue); padding: 15px; border-top: 4px solid var(--gold); text-align: center; z-index: 100; }
+        .btn-finalizar { background: var(--gold); color: var(--blue); padding: 18px; font-weight: bold; border-radius: 10px; border: none; font-size: 1.2rem; width: 90%; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center; color: var(--gold);">CONSOLIDACIÓN DE NOTAS</h2>
+    <p style="text-align: center;">Proyecto: {{ proyecto }}</p>
+
+    <form action="/consolidacion/{{ proyecto }}" method="POST">
+        {% for e in evaluaciones %}
+        <div class="card-estudiante">
+            <div class="nombre-est">{{ e.estudiante }}</div>
+            <input type="hidden" name="eval_id[]" value="{{ e.id }}">
+
+            <div id="cont-jurados-{{ loop.index0 }}">
+                <div class="box-jurado">
+                    <strong style="color: var(--gold);">JURADO PRINCIPAL (TÚ)</strong>
+                    <div class="row" style="border:none;">
+                        <span>Puntaje SEA:</span>
+                        <input type="number" class="input-nota nota-{{ loop.index0 }}" value="{{ e.nota_final }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-add" onclick="addJurado({{ loop.index0 }})">+ AGREGAR NOTA DE JURADO</button>
+
+            <div class="promedio-final">
+                PROMEDIO: <span id="txt-prom-{{ loop.index0 }}">{{ e.nota_final }}</span> / 20
+                <input type="hidden" name="nota_final_promediada[]" id="hidden-prom-{{ loop.index0 }}" value="{{ e.nota_final }}">
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="footer">
+            <button type="submit" class="btn-finalizar">FINALIZAR Y GUARDAR TODO</button>
+        </div>
+    </form>
+
+    <script>
+        let jCount = 0;
+
+        function addJurado(estIdx) {
+            const cont = document.getElementById('cont-jurados-' + estIdx);
+            const div = document.createElement('div');
+            div.className = "box-jurado";
+            div.id = "jurado_box_" + jCount;
+
+            div.innerHTML = `
+                <input type="text" placeholder="NOMBRE DEL JURADO" required>
+                <div class="row">
+                    <span>Puntuación Total (1-20):</span>
+                    <input type="number" step="0.1" min="0" max="20" class="input-nota nota-${estIdx}" 
+                           oninput="calc(${estIdx})" required>
+                </div>
+                <button type="button" class="btn-eliminar" onclick="removeJurado('${div.id}', ${estIdx})">ELIMINAR RECUADRO</button>
+            `;
+            cont.appendChild(div);
+            jCount++;
+            calc(estIdx);
+        }
+
+        function removeJurado(id, estIdx) {
+            document.getElementById(id).remove();
+            calc(estIdx);
+        }
+
+        function calc(estIdx) {
+            const notas = document.getElementsByClassName('nota-' + estIdx);
+            let suma = 0;
+            let total = 0;
+
+            for (let n of notas) {
+                let val = parseFloat(n.value);
+                if (!isNaN(val)) {
+                    suma += val;
+                    total++;
+                }
+            }
+
+            let prom = total > 0 ? (suma / total) : 0;
+            document.getElementById('txt-prom-' + estIdx).innerText = prom.toFixed(2);
+            document.getElementById('hidden-prom-' + estIdx).value = prom.toFixed(2);
+        }
+    </script>
+</body>
+</html>
