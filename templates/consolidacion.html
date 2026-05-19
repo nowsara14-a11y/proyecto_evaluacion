@@ -11,19 +11,18 @@
         .card-estudiante { border: 2px solid var(--gold); padding: 15px; margin-bottom: 30px; border-radius: 12px; background: rgba(255,255,255,0.05); }
         .nombre-est { color: var(--gold); text-align: center; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
 
-        /* Estética igual a la de añadir expositor */
         .box-jurado { background: var(--blue); border: 1px solid var(--gold); border-radius: 10px; margin-bottom: 15px; padding: 15px; overflow: hidden; }
         
         .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #444; }
-        .row span { font-size: 1.1rem; flex: 1; }
-
+        .row span { font-size: 1.1rem; font-weight: bold; }
+        
         input[type="text"] { width: 92%; padding: 12px; margin-bottom: 10px; font-size: 1.1rem; border-radius: 8px; border: 1px solid var(--gold); background: white; color: black; }
         .input-nota { font-size: 1.3rem; padding: 8px; background: var(--gold); border-radius: 8px; font-weight: bold; border: none; width: 70px; text-align: center; color: var(--blue); }
         
         .btn-add { width: 100%; padding: 15px; background: #27ae60; color: white; font-weight: bold; border: none; border-radius: 8px; margin: 10px 0; cursor: pointer; font-size: 1rem; }
         .btn-eliminar { background: #e74c3c; color: white; border: none; padding: 10px; border-radius: 8px; margin-top: 10px; width: 100%; font-weight: bold; cursor: pointer; }
         
-        .promedio-final { text-align: right; font-size: 1.4rem; color: var(--gold); font-weight: bold; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; }
+        .promedio-final { text-align: right; font-size: 1.4rem; color: var(--gold); font-weight: bold; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-top: 15px; }
 
         .footer { position: fixed; bottom: 0; left:0; width:100%; background: var(--blue); padding: 15px; border-top: 4px solid var(--gold); text-align: center; z-index: 100; }
         .btn-finalizar { background: var(--gold); color: var(--blue); padding: 18px; font-weight: bold; border-radius: 10px; border: none; font-size: 1.2rem; width: 90%; cursor: pointer; }
@@ -44,9 +43,21 @@
                     <strong style="color: var(--gold);">JURADO PRINCIPAL (TÚ)</strong>
                     <div class="row" style="border:none;">
                         <span>Puntaje SEA:</span>
-                        <input type="number" class="input-nota nota-{{ loop.index0 }}" value="{{ e.nota_final }}" readonly>
+                        <input type="number" name="nota-input-{{ loop.index0 }}" class="input-nota nota-{{ loop.index0 }}" value="{{ e.nota_final }}" readonly>
                     </div>
                 </div>
+
+                {% set notas_existentes = e.jurados_externos | load_json %}
+                {% for nota in notas_existentes %}
+                <div class="box-jurado" id="jurado_box_prev_{{ loop.parent.index0 }}_{{ loop.index0 }}">
+                    <input type="text" placeholder="NOMBRE DEL JURADO" value="Jurado Externo {{ loop.index }}" required>
+                    <div class="row">
+                        <span>Puntuación Total (1-20):</span>
+                        <input type="number" name="nota-input-{{ loop.parent.index0 }}" step="0.1" min="0" max="20" class="input-nota nota-{{ loop.parent.index0 }}" value="{{ nota }}" oninput="calc({{ loop.parent.index0 }})" required>
+                    </div>
+                    <button type="button" class="btn-eliminar" onclick="removeJurado('jurado_box_prev_{{ loop.parent.index0 }}_{{ loop.index0 }}', {{ loop.parent.index0 }})">ELIMINAR RECUADRO</button>
+                </div>
+                {% endfor %}
             </div>
 
             <button type="button" class="btn-add" onclick="addJurado({{ loop.index0 }})">+ AGREGAR NOTA DE JURADO</button>
@@ -70,13 +81,14 @@
             const cont = document.getElementById('cont-jurados-' + estIdx);
             const div = document.createElement('div');
             div.className = "box-jurado";
-            div.id = "jurado_box_" + jCount;
+            div.id = "jurado_box_new_" + jCount;
 
             div.innerHTML = `
                 <input type="text" placeholder="NOMBRE DEL JURADO" required>
                 <div class="row">
                     <span>Puntuación Total (1-20):</span>
-                    <input type="number" step="0.1" min="0" max="20" class="input-nota nota-${estIdx}" 
+                    <input type="number" name="nota-input-${estIdx}" step="0.1" min="0" max="20" 
+                           class="input-nota nota-${estIdx}" 
                            oninput="calc(${estIdx})" required>
                 </div>
                 <button type="button" class="btn-eliminar" onclick="removeJurado('${div.id}', ${estIdx})">ELIMINAR RECUADRO</button>

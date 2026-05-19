@@ -6,16 +6,16 @@
     <title>SEA - Historial de Evaluaciones</title>
     <style>
         :root { --primary: #002d5e; --accent: #ffd700; --dark: #001a33; }
-        body { font-family: sans-serif; background: #f4f7f6; padding: 15px; margin: 0; }
-        .container-historial { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        body { font-family: sans-serif; background: #004a99; padding: 15px; margin: 0; }
+        .container-historial { max-width: 1000px; margin: auto; background: #ffffff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h1 { color: var(--primary); text-align: center; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
         
         .btn-volver { text-decoration: none; color: white; background: var(--primary); padding: 10px 15px; border-radius: 8px; display: inline-block; margin-bottom: 20px; font-weight: bold; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
         th { background: var(--primary); color: white; padding: 12px; text-align: left; text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid #ddd; }
-        tr:hover { background-color: #f9f9f9; }
+        td { padding: 12px; border-bottom: 1px solid #ffd700; }
+        tr:hover { background-color: #d0cdd4; }
 
         /* Estilos de botones de acción */
         .btn-edit { background: #ffcc00; color: #002d5e; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; transition: 0.3s; }
@@ -37,9 +37,7 @@
                 <tr>
                     <th>Fecha</th>
                     <th>Proyecto</th>
-                    <th>Estudiante</th>
                     <th>Jurado</th>
-                    <th>Nota</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -48,12 +46,10 @@
                 <tr>
                     <td>{{ e.fecha }}</td>
                     <td><b>{{ e.proyecto }}</b></td>
-                    <td>{{ e.estudiante }}</td>
                     <td>{{ e.jurado }}</td>
-                    <td><span class="badge-nota">{{ e.nota_final }}</span></td>
                     <td>
                         <a href="{{ url_for('editar_evaluacion', id=e.id) }}" class="btn-edit">
-                            EDITAR / REVISAR
+                            EDITAR
                         </a>
                         
                         <a href="/descargar_reporte/{{ e.proyecto }}" class="btn-pdf">
